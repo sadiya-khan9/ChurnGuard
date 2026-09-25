@@ -25,7 +25,7 @@ joblib — persisting the trained model/scaler to disk
 
 Data storage
 
-CSV file (Churn_Modelling.csv) — no database, data loaded and processed at training time; predictions computed on the fly, not stored
+Banking Customer Churn Prediction Dataset by Saurabh Badole on Kaggle as CSV file (Churn_Modelling.csv) — no database, data loaded and processed at training time; predictions computed on the fly, not stored
 
 Deployment/tooling
 
@@ -39,17 +39,6 @@ requirements.txt for dependencies, run locally with python app.py (Flask dev ser
 
 There's also a small JSON API at `POST /api/predict` for programmatic use.
 
-## Using the real Kaggle dataset
-
-This repo ships with a **synthetic** `data/Churn_Modelling.csv` that matches the real
-dataset's column schema (`RowNumber, CustomerId, Surname, CreditScore, Geography,
-Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember,
-EstimatedSalary, Exited`), so the whole pipeline runs immediately.
-
-To use the **real data**:
-1. Download "Bank Customer Churn Prediction" by Saurabh Badole from Kaggle.
-2. Save the CSV as `data/Churn_Modelling.csv` (same column names as above).
-3. Re-run the training steps below — no code changes needed.
 
 ## Setup
 
