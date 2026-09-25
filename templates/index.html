@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<section class="bg-gradient-to-b from-brand-50/70 to-slate-50 border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
+    <p class="inline-block text-xs font-semibold tracking-wide uppercase text-brand-600 bg-brand-100 px-3 py-1 rounded-full mb-4">Bank Customer Churn</p>
+    <h1 class="font-display text-3xl sm:text-5xl font-extrabold text-slate-900 max-w-2xl leading-tight">
+      Know which customers are about to walk out the door.
+    </h1>
+    <p class="mt-4 text-slate-500 max-w-xl text-base sm:text-lg">
+      A Random Forest classifier trained on bank customer data — credit score, geography,
+      activity, products held — to flag churn risk before it happens.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="{{ url_for('predict') }}" class="bg-brand-600 hover:bg-brand-700 transition-colors text-white font-semibold px-5 py-3 rounded-xl shadow-soft">Score a customer</a>
+      <a href="{{ url_for('insights_page') }}" class="bg-white border border-slate-200 hover:border-brand-300 transition-colors text-slate-700 font-semibold px-5 py-3 rounded-xl">Explore the data</a>
+    </div>
+  </div>
+</section>
+
+{% if not ready %}
+<div class="max-w-7xl mx-auto px-5 sm:px-8 mt-10">
+  <div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-5 py-4 text-sm">
+    Model artifacts not found yet. Run <code class="bg-amber-100 px-1.5 py-0.5 rounded">python src/generate_data.py</code>,
+    then <code class="bg-amber-100 px-1.5 py-0.5 rounded">python src/train_model.py</code> and
+    <code class="bg-amber-100 px-1.5 py-0.5 rounded">python src/generate_insights.py</code>, then restart the app.
+  </div>
+</div>
+{% else %}
+
+<section class="max-w-7xl mx-auto px-5 sm:px-8 -mt-8 sm:-mt-10 relative z-10">
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-5">
+      <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">Total customers</p>
+      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-slate-900">{{ "{:,}".format(insights.total_customers) }}</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-5">
+      <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">Overall churn rate</p>
+      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-rose-500">{{ insights.overall_churn_rate }}%</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-5">
+      <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">Model accuracy</p>
+      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-emerald-600">{{ (metadata.metrics.accuracy * 100) | round(1) }}%</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-5">
+      <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">ROC-AUC</p>
+      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-slate-900">{{ metadata.metrics.roc_auc }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-5 sm:px-8 mt-8 grid lg:grid-cols-3 gap-5 pb-16">
+  <div class="lg:col-span-2 bg-white rounded-2xl shadow-soft border border-slate-100 p-6">
+    <h2 class="font-display font-bold text-slate-900 mb-1">Churn rate by geography</h2>
+    <p class="text-sm text-slate-400 mb-4">Where are customers most likely to leave?</p>
+    <canvas id="geoChart" height="180"></canvas>
+  </div>
+  <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-6 flex flex-col">
+    <h2 class="font-display font-bold text-slate-900 mb-1">Active vs. inactive</h2>
+    <p class="text-sm text-slate-400 mb-4">Churn rate by membership activity</p>
+    <canvas id="activityChart" height="220"></canvas>
+  </div>
+</section>
+
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if ready %}
+<script>
+  const geo = {{ insights.by_geography | tojson }};
+  new Chart(document.getElementById('geoChart'), {
+    type: 'bar',
+    data: {
+      labels: geo.labels,
+      datasets: [{ label: 'Churn rate (%)', data: geo.churn_rate, backgroundColor: '#5b5ce8', borderRadius: 8, maxBarThickness: 56 }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v + '%' } } } }
+  });
+
+  const act = {{ insights.by_activity | tojson }};
+  new Chart(document.getElementById('activityChart'), {
+    type: 'doughnut',
+    data: {
+      labels: act.labels,
+      datasets: [{ data: act.churn_rate, backgroundColor: ['#f43f5e', '#22c55e'] }]
+    },
+    options: { plugins: { legend: { position: 'bottom' } }, cutout: '65%' }
+  });
+</script>
+{% endif %}
+{% endblock %}

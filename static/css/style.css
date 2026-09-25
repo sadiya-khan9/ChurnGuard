@@ -1,0 +1,16 @@
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #c7ccff;
+  color: #211d63;
+}
+
+canvas {
+  max-height: 260px;
+}
+
+input:focus, select:focus {
+  box-shadow: 0 0 0 4px rgba(91, 92, 232, 0.12);
+}

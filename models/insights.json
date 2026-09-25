@@ -1,0 +1,117 @@
+{
+  "overall_churn_rate": 27.5,
+  "total_customers": 10000,
+  "churned_customers": 2754,
+  "avg_age": 53.5,
+  "avg_credit_score": 649.0,
+  "by_geography": {
+    "labels": [
+      "France",
+      "Germany",
+      "Spain"
+    ],
+    "churn_rate": [
+      20.3,
+      50.0,
+      19.5
+    ],
+    "count": [
+      5076,
+      2511,
+      2413
+    ]
+  },
+  "by_gender": {
+    "labels": [
+      "Female",
+      "Male"
+    ],
+    "churn_rate": [
+      31.1,
+      24.5
+    ],
+    "count": [
+      4603,
+      5397
+    ]
+  },
+  "by_age_band": {
+    "labels": [
+      "18-29",
+      "30-39",
+      "40-49",
+      "50-59",
+      "60-69",
+      "70+"
+    ],
+    "churn_rate": [
+      19.5,
+      10.6,
+      18.5,
+      25.7,
+      39.3,
+      56.1
+    ],
+    "count": [
+      41,
+      1011,
+      3024,
+      3080,
+      1833,
+      1011
+    ]
+  },
+  "by_num_products": {
+    "labels": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "churn_rate": [
+      27.8,
+      23.6,
+      81.5,
+      87.6
+    ],
+    "count": [
+      5070,
+      4625,
+      200,
+      105
+    ]
+  },
+  "by_activity": {
+    "labels": [
+      "Inactive",
+      "Active"
+    ],
+    "churn_rate": [
+      40.0,
+      15.9
+    ]
+  },
+  "by_balance_band": {
+    "labels": [
+      "Zero",
+      "1-50k",
+      "50-100k",
+      "100-150k",
+      "150k+"
+    ],
+    "churn_rate": [
+      24.1,
+      29.6,
+      29.4,
+      30.6,
+      29.5
+    ],
+    "count": [
+      3973,
+      1072,
+      1956,
+      1768,
+      1231
+    ]
+  }
+}

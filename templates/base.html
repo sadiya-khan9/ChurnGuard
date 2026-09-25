@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}ChurnGuard{% endblock %} · Bank Churn Predictor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Sora', 'sans-serif'] },
+          colors: {
+            brand: { 50: '#f2f4ff', 100: '#e6e9ff', 200: '#c7ccff', 300: '#a3a9fc', 400: '#7c7ff5', 500: '#5b5ce8', 600: '#4740d4', 700: '#3931ab', 800: '#2c2686', 900: '#211d63' },
+          },
+          boxShadow: { soft: '0 10px 30px -12px rgba(45,38,134,0.18)' },
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16">
+      <a href="{{ url_for('dashboard') }}"
+        class="flex items-center gap-2.5 font-display font-extrabold text-lg text-slate-900">
+        <span
+          class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white text-sm shadow-soft">CG</span>
+        ChurnGuard
+      </a>
+      <nav class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-full p-1">
+        {% set links = [('dashboard','Dashboard','/'), ('predict','Predict','/predict'),
+        ('insights','Insights','/insights')] %}
+        {% for key, label, href in links %}
+        <a href="{{ href }}"
+          class="px-4 py-2 rounded-full text-sm font-medium transition-colors
+                {% if active == key %}bg-white text-brand-700 shadow-sm{% else %}text-slate-500 hover:text-slate-800{% endif %}">
+          {{ label }}
+        </a>
+        {% endfor %}
+      </nav>
+      <a href="{{ url_for('predict') }}"
+        class="hidden sm:inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 transition-colors text-white text-sm font-semibold px-4 py-2 rounded-full shadow-soft">
+        Try a prediction →
+      </a>
+      <button id="menuBtn" class="sm:hidden p-2 rounded-lg hover:bg-slate-100">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    <nav id="mobileNav" class="hidden sm:hidden border-t border-slate-200 px-5 py-3 flex flex-col gap-1 bg-white">
+      {% for key, label, href in [('dashboard','Dashboard','/'), ('predict','Predict','/predict'),
+      ('insights','Insights','/insights')] %}
+      <a href="{{ href }}"
+        class="px-3 py-2 rounded-lg text-sm font-medium {% if active == key %}bg-brand-50 text-brand-700{% else %}text-slate-600{% endif %}">{{
+        label }}</a>
+      {% endfor %}
+    </nav>
+  </header>
+
+  <main class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-t border-slate-200 mt-16">
+    <div
+      class="max-w-7xl mx-auto px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-400">
+      <p>ChurnGuard — Bank Customer Churn Prediction · scikit-learn Random Forest · Flask</p>
+      <p>Dataset schema: Kaggle "Bank Customer Churn Prediction"</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+
+</html>

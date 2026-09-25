@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Insights{% endblock %}
+{% block content %}
+
+<section class="max-w-7xl mx-auto px-5 sm:px-8 py-10 sm:py-14">
+  <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900">Data insights</h1>
+  <p class="text-slate-500 mt-2">Where churn concentrates across the customer base.</p>
+
+  {% if not ready %}
+  <div class="mt-8 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-5 py-4 text-sm">
+    Insights not generated yet. Run <code
+      class="bg-amber-100 px-1.5 py-0.5 rounded">python src/generate_insights.py</code> then restart the app.
+  </div>
+  {% else %}
+
+  <div class="mt-8 grid md:grid-cols-2 gap-5">
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-6">
+      <h2 class="font-display font-bold text-slate-900 mb-1">By geography</h2>
+      <p class="text-sm text-slate-400 mb-4">Churn rate (%) per country</p>
+      <canvas id="geoChart" height="200"></canvas>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-6">
+      <h2 class="font-display font-bold text-slate-900 mb-1">By gender</h2>
+      <p class="text-sm text-slate-400 mb-4">Churn rate (%) by gender</p>
+      <canvas id="genderChart" height="200"></canvas>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-6">
+      <h2 class="font-display font-bold text-slate-900 mb-1">By age band</h2>
+      <p class="text-sm text-slate-400 mb-4">Churn rate (%) across age groups</p>
+      <canvas id="ageChart" height="200"></canvas>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-6">
+      <h2 class="font-display font-bold text-slate-900 mb-1">By number of products</h2>
+      <p class="text-sm text-slate-400 mb-4">Customers with 3-4 products churn the most</p>
+      <canvas id="productsChart" height="200"></canvas>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-6">
+      <h2 class="font-display font-bold text-slate-900 mb-1">By balance band</h2>
+      <p class="text-sm text-slate-400 mb-4">Churn rate (%) by account balance range</p>
+      <canvas id="balanceChart" height="200"></canvas>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-6 flex flex-col justify-center">
+      <h2 class="font-display font-bold text-slate-900 mb-4">Snapshot</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-xs text-slate-400 uppercase">Customers</p>
+          <p class="text-xl font-display font-bold text-slate-900">{{ "{:,}".format(insights.total_customers) }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 uppercase">Churned</p>
+          <p class="text-xl font-display font-bold text-rose-500">{{ "{:,}".format(insights.churned_customers) }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 uppercase">Avg. age</p>
+          <p class="text-xl font-display font-bold text-slate-900">{{ insights.avg_age }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 uppercase">Avg. credit score</p>
+          <p class="text-xl font-display font-bold text-slate-900">{{ insights.avg_credit_score | int }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% if ready %}
+<script>
+  const palette = ['#5b5ce8', '#8b8ef0', '#22c55e', '#f59e0b', '#f43f5e', '#0ea5e9'];
+  function barChart(id, data, xLabel) {
+    new Chart(document.getElementById(id), {
+      type: 'bar',
+      data: { labels: data.labels, datasets: [{ label: 'Churn rate (%)', data: data.churn_rate, backgroundColor: palette, borderRadius: 8, maxBarThickness: 48 }] },
+      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v + '%' } } } }
+    });
+  }
+  barChart('geoChart', {{ insights.by_geography | tojson }});
+  barChart('genderChart', {{ insights.by_gender | tojson }});
+  barChart('ageChart', {{ insights.by_age_band | tojson }});
+  barChart('productsChart', {{ insights.by_num_products | tojson }});
+  barChart('balanceChart', {{ insights.by_balance_band | tojson }});
+</script>
+{% endif %}
+{% endblock %}

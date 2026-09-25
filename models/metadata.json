@@ -1,0 +1,57 @@
+{
+  "feature_columns": [
+    "CreditScore",
+    "Age",
+    "Tenure",
+    "Balance",
+    "NumOfProducts",
+    "HasCrCard",
+    "IsActiveMember",
+    "EstimatedSalary",
+    "Geography_Germany",
+    "Geography_Spain",
+    "Gender_Male"
+  ],
+  "geography_categories": [
+    "France",
+    "Germany",
+    "Spain"
+  ],
+  "gender_categories": [
+    "Female",
+    "Male"
+  ],
+  "metrics": {
+    "accuracy": 0.7765,
+    "precision": 0.5765,
+    "recall": 0.7114,
+    "f1_score": 0.6369,
+    "roc_auc": 0.8354,
+    "n_train": 8000,
+    "n_test": 2000,
+    "churn_rate_overall": 0.2754,
+    "confusion_matrix": [
+      [
+        1161,
+        288
+      ],
+      [
+        159,
+        392
+      ]
+    ]
+  },
+  "feature_importances": {
+    "Age": 0.2625,
+    "Geography_Germany": 0.1686,
+    "IsActiveMember": 0.1649,
+    "NumOfProducts": 0.0988,
+    "CreditScore": 0.0874,
+    "EstimatedSalary": 0.0748,
+    "Balance": 0.063,
+    "Tenure": 0.0375,
+    "Gender_Male": 0.0207,
+    "Geography_Spain": 0.0124,
+    "HasCrCard": 0.0092
+  }
+}
