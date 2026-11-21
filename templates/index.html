@@ -4,7 +4,9 @@
 
 <section class="bg-gradient-to-b from-brand-50/70 to-slate-50 border-b border-slate-200">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-    <p class="inline-block text-xs font-semibold tracking-wide uppercase text-brand-600 bg-brand-100 px-3 py-1 rounded-full mb-4">Bank Customer Churn</p>
+    <p
+      class="inline-block text-xs font-semibold tracking-wide uppercase text-brand-600 bg-brand-100 px-3 py-1 rounded-full mb-4">
+      Bank Customer Churn</p>
     <h1 class="font-display text-3xl sm:text-5xl font-extrabold text-slate-900 max-w-2xl leading-tight">
       Know which customers are about to walk out the door.
     </h1>
@@ -13,8 +15,12 @@
       activity, products held — to flag churn risk before it happens.
     </p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="{{ url_for('predict') }}" class="bg-brand-600 hover:bg-brand-700 transition-colors text-white font-semibold px-5 py-3 rounded-xl shadow-soft">Score a customer</a>
-      <a href="{{ url_for('insights_page') }}" class="bg-white border border-slate-200 hover:border-brand-300 transition-colors text-slate-700 font-semibold px-5 py-3 rounded-xl">Explore the data</a>
+      <a href="{{ url_for('predict') }}"
+        class="bg-brand-600 hover:bg-brand-700 transition-colors text-white font-semibold px-5 py-3 rounded-xl shadow-soft">Score
+        a customer</a>
+      <a href="{{ url_for('insights_page') }}"
+        class="bg-white border border-slate-200 hover:border-brand-300 transition-colors text-slate-700 font-semibold px-5 py-3 rounded-xl">Explore
+        the data</a>
     </div>
   </div>
 </section>
@@ -22,9 +28,8 @@
 {% if not ready %}
 <div class="max-w-7xl mx-auto px-5 sm:px-8 mt-10">
   <div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-5 py-4 text-sm">
-    Model artifacts not found yet. Run <code class="bg-amber-100 px-1.5 py-0.5 rounded">python src/generate_data.py</code>,
-    then <code class="bg-amber-100 px-1.5 py-0.5 rounded">python src/train_model.py</code> and
-    <code class="bg-amber-100 px-1.5 py-0.5 rounded">python src/generate_insights.py</code>, then restart the app.
+    Model artifacts not found yet. Run <code class="bg-amber-100 px-1.5 py-0.5 rounded">python src/train_model.py</code>
+    and <code class="bg-amber-100 px-1.5 py-0.5 rounded">python src/generate_insights.py</code>, then restart the app.
   </div>
 </div>
 {% else %}
@@ -33,15 +38,18 @@
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-5">
       <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">Total customers</p>
-      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-slate-900">{{ "{:,}".format(insights.total_customers) }}</p>
+      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-slate-900">{{
+        "{:,}".format(insights.total_customers) }}</p>
     </div>
     <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-5">
       <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">Overall churn rate</p>
-      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-rose-500">{{ insights.overall_churn_rate }}%</p>
+      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-rose-500">{{ insights.overall_churn_rate }}%
+      </p>
     </div>
     <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-5">
       <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">Model accuracy</p>
-      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-emerald-600">{{ (metadata.metrics.accuracy * 100) | round(1) }}%</p>
+      <p class="mt-2 text-2xl sm:text-3xl font-display font-extrabold text-emerald-600">{{ (metadata.metrics.accuracy *
+        100) | round(1) }}%</p>
     </div>
     <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-5">
       <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">ROC-AUC</p>

@@ -7,12 +7,10 @@ Pages:
   /            Dashboard  — headline KPIs + quick charts
   /predict     Predict    — form to score a single customer, GET + POST
   /insights    Insights   — deeper EDA breakdowns (geography, age, products...)
-  /about       About      — project & model info, feature importances
 
 Run:
   python -m venv .venv && source .venv/bin/activate   (or venv\\Scripts\\activate on Windows)
   pip install -r requirements.txt
-  python src/generate_data.py        # only needed once, or swap in the real Kaggle CSV
   python src/train_model.py
   python src/generate_insights.py
   python app.py
